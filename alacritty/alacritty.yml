@@ -1,0 +1,60 @@
+# alacritty settings
+# ref: https://github.com/alacritty/alacritty/blob/master/alacritty.yml
+
+# 環境変数設定
+env:
+  # `$TERM` (defaultは`alacritty`)
+  TERM: "alacritty"
+
+window:
+  # ウィンドウのサイズ (文字数)。`0` でよしなに設定してくれる。
+  dimensions:
+    columns: 0
+    lines: 0
+
+  # ウィンドウ内 padding (ピクセル)
+  padding:
+    x: 0
+    y: 0
+
+  # Window decorations (full, none, transparent, buttonless)
+  decorations: "buttonless"
+
+  # 背景不透過度 (1.0: 透過なし、0.0: 透過)
+  opacity: 0.90
+
+  # Startup Mode (Windowed, Maximized, Fullscreen, SimpleFullscreen;changes require restart)
+  startup_mode: "Fullscreen"
+
+  # Resize increments (ウィンドウサイズ変更時に文字サイズ単位でリサイズする)
+  resize_increments: true
+
+scrolling:
+  # スクロール履歴最大数 (default: 10000, tmuxで管理するので0にしておく)
+  history: 0
+
+font:
+  normal:
+    family: "RictyDiminishedDiscord Nerd Font"
+    style: "Regular"
+  bold:
+    family: "RictyDiminishedDiscord Nerd Font"
+    style: "Bold"
+  italic:
+    family: "RictyDiminishedDiscord Nerd Font"
+    style: "Oblique"
+  bold_italic:
+    family: "RictyDiminishedDiscord Nerd Font"
+    style: "BoldOblique"
+
+  # 文字サイズ
+  size: 16.0
+
+shell:
+  program: "/bin/zsh"
+  args:
+    - "-c" 
+    - "tmux a -t default || tmux new -s default"
+
+key_bindings:
+  - { key: Yen, chars: "\x5C" }

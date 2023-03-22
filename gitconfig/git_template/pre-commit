@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# git config --local を指定しなかったらダメだよ
+if [ -z "`git config --local user.name`" ] ; then
+  echo 'ERROR: please set `git config --local user.name`'
+  exit 1
+fi
+
+if [ -z "`git config --local user.email`" ] ; then
+  echo 'ERROR: please set `git config --local user.email`'
+  exit 1
+fi

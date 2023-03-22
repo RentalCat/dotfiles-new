@@ -1,0 +1,4 @@
+./gpg-agent.conf	~/.gnupg/gpg-agent.conf
+./alacritty/alacritty.yml	~/.alacritty.yml
+./zsh/zshenv	~/.zshenv
+./gitconfig/gitconfig	~/.gitconfig

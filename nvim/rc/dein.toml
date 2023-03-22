@@ -1,0 +1,16 @@
+# plugin manager ========================================================== {{{
+[[plugins]]  # プラグイン管理ツール (自分自身を管理対象にしておく)
+repo = 'Shougo/dein.vim'
+# }}}
+
+# colorscheme ============================================================= {{{
+[[plugins]]
+repo = 'tomasr/molokai'
+hook_add = 'colorscheme molokai'
+# }}}
+
+# status bar, tab bar のUIカスタマイズ ==================================== {{{
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = 'execute "source " . GetNvimrcDir() . "/plugins/lightline.rc.vim"'
+# }}}

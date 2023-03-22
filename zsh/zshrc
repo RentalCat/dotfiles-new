@@ -1,0 +1,150 @@
+######################################################################
+# .zshrc
+#   ログイン / インタラクティブ にて読み込まれる
+######################################################################
+
+# デバッグフラグONでプロファイル取る
+#zmodload zsh/zprof && zprof
+
+readonly zsh_dir="$XDG_CONFIG_HOME/zsh"
+readonly zsh_data_dir="$XDG_DATA_HOME/zsh"
+
+# ls 時の色設定
+export LSCOLORS=gxfxcxdxbxegedabagacad
+export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+export ZLS_COLORS=$LS_COLORS
+export CLICOLOR=true
+
+
+# asdf (anyenvに変わる環境バージョン管理ツール) ======================
+eval ". /opt/homebrew/opt/asdf/libexec/asdf.sh"
+
+# completion =========================================================
+# 補完パス
+fpath=(
+  $(brew --prefix)/share/zsh/site-functions
+  $fpath
+)
+
+# 補完機能を有効、実行 (補完リストは `$zsh_data_dir/.zshcompdump` に記録)
+#   ここでやっておかないと一部pluginが使えない
+autoload -Uz compinit && compinit -C -d $zsh_data_dir/.zshcompdump
+
+# zstyles ------------------------------------------------------------
+readonly c_info_fg="${c_acc_10}"
+readonly c_err_fg="red"  # FIXME
+# zstyle `:completion:<function>:<completer>:<command>:<argument>:<tag>`
+#   completion  : zstyleを使用する他のスクリプトとの衝突を避けるため、名前空間として機能する文字列
+#   <function>  : 外部関数またはウィジェットの補完スタイル名
+#   <completer> : コンプリータ名 (補間関数からアンダースコアを削除したもの)
+#   <command>   : 対象とするコマンド区分 (cd、rm、sed など)
+#   <argument>  : 対象とするn番目のオプション or 引数 (多くのスタイルでは利用しない)
+#   <tag>       : 特定のタグにスタイルを適用
+
+# メニュー補完有効 (tabキーで選択できるように, 2つ以上の要素で有効)
+zstyle ':completion:*' menu true select=2
+
+# キャッシュを有効化、補完メニューの展開を高速化する
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$zsh_data_dir/.zcompcache"
+
+# 補完リストの冗長化、多くのコマンドでオプションの説明を表示するように
+zstyle ':completion:*' verbose yes
+
+# マッチ種別ごとにグループ分けして表示する
+zstyle ':completion:*' group-name ''
+
+# ファイル一覧を表示時により詳細の情報を出す
+#zstyle ':completion:*' file-list all
+
+
+# 補間関数設定 (先頭から順に候補を探していく。見つかったら以降は検索されない)
+#   _expand      : 拡張機能追加 (他にて設定、_complete関数より先に定義する必要あり)
+#   _complete    : 補完する。
+#   _match       : globを展開しないで候補の一覧から補完する。
+#   _prefix      : カーソル以降を無視してカーソル位置までで補完する。
+#   _approximate : 似ている補完候補も補完候補とする。
+#   _list        : 
+#   _history     : ヒストリのコマンドも補完候補とする。
+zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+
+
+# 小文字の場合は大文字もヒットさせる
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+zstyle ':completion:*' list-separator '-->'
+#zstyle ':completion:*:*:*:*:messages' format "%F{yellow}%d%f"
+#zstyle ':completion:*:*:*:*:warnings' format "%F{red}No matches for:%F{yellow} %d%f"
+zstyle ':completion:*:*:*:*:descriptions' format "%F{${c_info_fg}}-- %B%d%b %F{${c_info_fg}}--%f"
+zstyle ':completion:*:*:*:*:corrections' format "%F{${c_info_fg}}-- %B%d%b %F{${c_err_fg}}%B(errors: %e)%b %F{${c_info_fg}}--%f"
+zstyle ':completion:*:*:*:*:options' description 'yes'
+zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# plugins ============================================================
+[[ -r $zsh_dir/rc/plugin.zsh ]] && source $zsh_dir/rc/plugin.zsh
+
+# options ============================================================
+# general
+setopt interactive_comments                      # '#' 以降をコメントとして扱う
+setopt nolistbeep                                # ビープ音なし
+setopt no_flow_control                           # フリーコントロールを無効にする
+setopt print_eight_bit                           # 日本語ファイル名を表示可能にする
+
+# history
+setopt share_history                             # ヒストリーを共有する
+setopt hist_ignore_all_dups                      # 同じコマンドを繰り返している時に履歴を記録しない
+setopt hist_save_no_dups                         # 重複するコマンドが保存される時、古い方を削除する
+setopt hist_expire_dups_first                    # 古い履歴を削除する必要がある場合、まず重複しているものから削除する
+setopt hist_ignore_space                         # 初めにスペースが有る場合は記録しない
+setopt hist_reduce_blanks                        # 履歴記録時に余分な空白は削除する
+setopt hist_find_no_dups                         # 履歴検索で重複しているものを表示しない
+setopt hist_no_store                             # historyコマンドは除去する
+setopt hist_expand                               # 補完時にヒストリを自動的に展開
+setopt extended_history                          # 履歴に開始時刻や実行時間を記録
+setopt inc_append_history                        # 履歴をインクリメンタルに追加
+
+# completation
+setopt always_last_prompt                        # 補完のときプロンプトの位置を変えない
+setopt auto_list                                 # 補完候補を一覧表示
+setopt auto_menu                                 # TAB で順に補完候補を切り替える
+setopt complete_in_word                          # カーソルの位置に補なうことで単語を完成させようとする
+setopt complete_aliases                          # alias でも補完する
+# setopt correct                                   # タイプミス修正
+setopt listpacked                                # 予測リストを詰めて表示
+setopt list_packed                               # 補完候補を詰めて表示
+setopt list_types                                # 補完候補を種別表示
+setopt magic_equal_subst                         # = 後のパスも補完する
+setopt rec_exact                                 # 補完の決めつけ防止
+
+# cd
+setopt auto_cd                                   # cdを抜いても動作するように設定
+setopt auto_pushd                                # 「cd -[TAB]」でディレクトリリストを表示
+setopt auto_param_slash                          # ディレクトリ名の補完で末尾の / を自動的に付加
+setopt auto_remove_slash                         # 補完時にスラッシュが2回続いた場合、1つ取り除く
+setopt pushd_ignore_dups                         # 重複したディレクトリを追加しない
+
+# keybinds ===========================================================
+bindkey -d  # キーバインドリセット
+bindkey -e  # キーバインドをemacsモードで (viモード使いにくかった...)
+# anyframe
+bindkey '^r' anyframe-widget-put-history
+bindkey '^xr' anyframe-widget-put-history
+bindkey '^x^r' anyframe-widget-put-history
+bindkey '^xb' anyframe-widget-checkout-git-branch
+bindkey '^x^b' anyframe-widget-checkout-git-branch
+
+
+# alias ==============================================================
+# neovim使うよ
+alias vim="nvim"
+alias gst="git status -sbu"
+alias glogg="git -c color.diff=always log --stat --pretty=format:'%C(cyan)%h %C(green)%ar %C(yellow)%an %C(reset)%s %C(red)%d%C(reset)'"
+alias glog="glogg | head"
+alias gloggraph="git -c color.diff=always log --graph --date-order --pretty=format:'%C(cyan)%h %C(green)%ci %C(yellow)%an %C(blue)%m %C(reset)%s %C(red)%d'"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="$HOME/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+#
+# プロファイル有効なら出力
+(which zprof > /dev/null 2>&1) && zprof

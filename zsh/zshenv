@@ -1,0 +1,15 @@
+######################################################################
+# .zshenv
+#   ログイン / インタラクティブ / シェルスクリプト 全てで読み込まれる
+#   影響が大きいので最低限の定義にしておく
+######################################################################
+
+# homebrew パス設定 (homebrewは事前にインストールしておくこと！)
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export XDG_CONFIG_HOME="$HOME/dotfiles"
+export XDG_DATA_HOME="$HOME/.local/share"
+
+# tmux の外側ならこれ移行の処理は行わない。
+if [[ -z $TMUX ]] then
+  return 0
+fi

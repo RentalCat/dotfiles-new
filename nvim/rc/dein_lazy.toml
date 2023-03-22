@@ -1,0 +1,21 @@
+# ファイラー ============================================================== {{{
+[[plugins]]
+repo = 'lambdalisue/fern.vim'
+on_map = {n = '<Plug>'}
+hook_add = '''
+  nnoremap <silent> <Leader>f :<C-u>Fern . -reveal=%<CR>
+'''
+# }}}
+
+# ファイラー ============================================================== {{{
+[[plugins]]  # 単語検索拡張
+repo = 'easymotion/vim-easymotion'
+on_map = '<Plug>(easymotion-'
+hook_add = '''
+  let g:EasyMotion_do_mapping = 0
+  nnoremap , <Plug>(easymotion-s2)
+  nnoremap / <Plug>(easymotion-sn)
+  nnoremap f <Plug>(easymotion-fl)
+  nnoremap F <Plug>(easymotion-Fl)
+'''
+# }}}

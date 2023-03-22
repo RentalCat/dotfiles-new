@@ -1,0 +1,157 @@
+scriptencoding utf-8
+
+" init only settings ------------------------------------------------------ {{{
+" 起動時のみ呼ばれるやーつ
+if has('vim_starting')
+  " execute 'source' expand('<sfile>:h').'/init.rc.vim'
+endif
+" }}}
+"
+" first settinfs ---------------------------------------------------------- {{{
+" Leader設定 (プラグインにkeybindを反映させるため冒頭で定義)
+let mapleader = "\<Space>"
+" utils
+execute 'source' expand('<sfile>:h').'/utils.rc.vim'
+
+" }}}
+
+" dein.vim ---------------------------------------------------------------- {{{
+execute 'source' expand('<sfile>:h').'/dein.rc.vim'
+" }}}
+
+" 描画関係 (全域に影響あるもの) ------------------------------------------- {{{
+" シンタックスハイライト ON (plufin 設定内でやっているので不要)
+" syntax on
+
+" True Color
+set termguicolors
+" スクリプト実行中に再描画しない (重たくなるので)
+set lazyredraw
+
+" 行数を表示 (カレント行: 行番号, その他の行: カレント行との相対行数)
+set number
+set relativenumber
+
+" カーソル行を色付け (描画処理が重たいときはコメント)
+set cursorline
+
+" 100 文字目に色を付ける
+set colorcolumn=100
+
+" list モードをオンにして見えない文字を可視化
+set list
+set list listchars=tab:>-,trail:_,eol:$
+
+" 折り返ししない
+set nowrap
+
+" 対応する括弧を強調表示する
+set showmatch
+
+" diff モード設定 (分割を縦方向に、アルゴリズム変更)
+set diffopt=internal,filler,vertical,algorithm:histogram,indent-heuristic
+
+" 日本語(マルチバイト文字)行の連結時には空白を入力しない + コメント行処理を行う
+set formatoptions+=mMj
+
+" □や○の文字があってもカーソル位置がずれないようにする。
+set ambiwidth=single
+
+" 画面最後の行をできる限り表示する。
+set display+=lastline
+
+" colorscheme
+"colorscheme molokai
+" }}}
+
+" コマンドライン・ステータスライン --------------------------------------------
+" コマンドラインで補完時に候補一覧を表示
+set wildmenu
+set wildmode=longest:full,full
+
+" 入力中のコマンドをコマンドライン右側に表示する
+set showcmd
+
+" コマンドライン履歴件数 (10000 が最大値)
+set history=10000
+
+" 補完時に変なウィンドウ開かない
+set completeopt-=preview
+
+" 検索関係 --------------------------------------------------------------------
+" 小文字で検索した場合, 大文字小文字を無視
+set ignorecase
+set smartcase
+
+" インクリメンタルサーチ (入力中に候補地点へ移動)
+set incsearch
+
+" 検索結果をハイライト
+set hlsearch
+
+" インデント・文字整形関係 (デフォルト値) -------------------------------------
+" タブ文字を空白入力に置き換える
+set expandtab
+
+" タブ文字の幅
+set tabstop=4
+
+" vim が挿入するインデントの文字数
+set shiftround
+set shiftwidth=4
+
+" <Tab> キーを押した時の空白文字数
+set softtabstop=4
+
+" 改行時に前の行のインデントを継続
+set autoindent
+
+" 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
+set smartindent
+
+" 自動改行設定 (文字が長い場合に改行する, 0 で自動改行しない)
+set textwidth=0
+
+" バックスペースキーを調整
+set backspace=indent,eol,start
+
+" バックアップファイル関係 ----------------------------------------------------
+" .swp ファイルを作成しない
+set noswapfile
+" ~ (チルダ)ファイルを作成しない
+set nobackup
+" CursorHoldの時間を設定
+set updatetime=500
+
+" キー関係 --------------------------------------------------------------------
+" <ESC><ESC>  ==> ハイライトを消す
+nmap <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+" ZQ          ==> 全ファイルクローズ (従来の :q! やめました)
+noremap ZQ      :<C-u>windo q<CR>
+" ZQ          ==> 全ファイル更新
+noremap ZE      :<C-u>windo e<CR>
+" タブ関係
+nnoremap [tab] <Nop>
+nmap t [tab]
+nnoremap [tab]n       :<C-u>tabnew <C-R>%<CR>
+nnoremap [tab]<LEFT>  :<C-u>tabprev<CR>
+nnoremap [tab]<RIGHT> :<C-u>tabnext<CR>
+nnoremap [tab]h       :<C-u>tabprev<CR>
+nnoremap [tab]l       :<C-u>tabnext<CR>
+nnoremap [tab]q       :<C-u>tabclose<CR>
+
+" ウィンドウ関係
+nnoremap <C-w><C-l>   :<C-u>vertical resize +5<CR>
+nnoremap <C-w><C-h>   :<C-u>vertical resize -5<CR>
+nnoremap <C-w><C-k>   :<C-u>resize +5<CR>
+nnoremap <C-w><C-j>   :<C-u>resize -5<CR>
+
+" コマンドモード: カレントファイルパス・ディレクトリ補完
+cmap <C-X> <C-r>=expand('%:p:h')<cr>/
+cmap <C-Z> <C-r>=expand('%:p')<cr>
+
+" きょうせいギプス
+noremap <Up>    <Nop>
+noremap <Down>  <Nop>
+noremap <Left>  <Nop>
+noremap <Right> <Nop>

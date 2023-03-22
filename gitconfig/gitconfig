@@ -1,0 +1,44 @@
+[user]
+    useConfigOnly = true
+[core]
+    excludesfile = "$XDG_CONFIG_HOME/gitconfig/gitignore_global"
+    editor = nvim -c \"set fenc=utf-8\"
+    autocrlf = input
+    commentchar = "#"
+[color]
+    ui = true
+[commit]
+    gpgsign = true
+[merge]
+    tool = vimmerge
+[alias]
+    b = branch
+    co = checkout
+    cm = commit
+    df = difftool -y
+    delete-merged-branch = !git fetch -p && git branch --merged | grep -vE '^\\*|master$|develop$' | xargs git branch -d || true
+    # delete-branch = !git branch | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -dq % || true
+[diff]
+    algorithm = histogram
+    tool = vimdiff
+[difftool "vimdiff"]
+    cmd = nvim -R -d $LOCAL $REMOTE
+    # cmd = nvim -d $LOCAL $MERGED -c 'set ro' -c 'wincmd w'
+[mergetool "vimmerge"]
+    # cmd = echo "MERGED: $MERGED" && echo "LOCAL: $LOCAL" && echo "BASE: $BASE" && echo "REMOTE: $REMOTE" && nvim -R -d $MERGED $LOCAL $BASE $REMOTE
+    cmd = nvim -R -d $MERGED $LOCAL $BASE $REMOTE -c 'wincmd J' -c 'set noro'
+
+[init]
+    templatedir = "$XDG_CONFIG_HOME/gitconfig/git_template"
+
+[pull]
+    rebase = false
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[fetch]
+    prune = true
+
+# vim: set ft=gitconfig:
