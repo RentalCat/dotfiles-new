@@ -1,7 +1,8 @@
 [user]
     useConfigOnly = true
 [core]
-    excludesfile = "$XDG_CONFIG_HOME/gitconfig/gitignore_global"
+    # 除外ファイル: (本当は $XDG_CONFIG_HOME を使いたいが、.gitconfig内は環境変数が展開されない...)
+    excludesfile = "~/dotfiles/gitconfig/gitignore_global"
     editor = nvim -c \"set fenc=utf-8\"
     autocrlf = input
     commentchar = "#"
@@ -29,7 +30,8 @@
     cmd = nvim -R -d $MERGED $LOCAL $BASE $REMOTE -c 'wincmd J' -c 'set noro'
 
 [init]
-    templatedir = "$XDG_CONFIG_HOME/gitconfig/git_template"
+    # テンプレート (本当は $XDG_CONFIG_HOME を使いたいが、.gitconfig内は環境変数が展開されない...)
+    templatedir = "~/dotfiles/gitconfig/git_template"
 
 [pull]
     rebase = false
