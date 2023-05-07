@@ -6,9 +6,6 @@
 # デバッグフラグONでプロファイル取る
 #zmodload zsh/zprof && zprof
 
-readonly zsh_dir="$XDG_CONFIG_HOME/zsh"
-readonly zsh_data_dir="$XDG_DATA_HOME/zsh"
-
 # ls 時の色設定
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
@@ -137,10 +134,36 @@ bindkey '^x^b' anyframe-widget-checkout-git-branch
 # alias ==============================================================
 # neovim使うよ
 alias vim="nvim"
+
+# git関係
 alias gst="git status -sbu"
 alias glogg="git -c color.diff=always log --stat --pretty=format:'%C(cyan)%h %C(green)%ar %C(yellow)%an %C(reset)%s %C(red)%d%C(reset)'"
 alias glog="glogg | head"
 alias gloggraph="git -c color.diff=always log --graph --date-order --pretty=format:'%C(cyan)%h %C(green)%ci %C(yellow)%an %C(blue)%m %C(reset)%s %C(red)%d'"
+function gpush() {
+git push origin $(git symbolic-ref HEAD | sed "s|refs/heads/||g" 2> /dev/null)
+}
+function gforcepush() {
+local branch_name
+readonly branch_name="$(git symbolic-ref HEAD | sed "s|refs/heads/||g" 2> /dev/null)"
+git push --delete origin $branch_name
+git push origin $branch_name
+}
+
+# ls関係
+if [[ -x `whence -p exa` ]]; then
+  # exa があればそちらを使う
+  alias ls="exa --icons"
+  alias ll="ls -l -h --git"
+else
+  alias ll="ls -l"
+fi
+
+# 標準ツールの上位互換系に置き換え
+
+
+# 自作ツール's
+alias cgpt="${XDG_CONFIG_HOME}/misc/chat-gpt/main.py"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="$HOME/.rd/bin:$PATH"

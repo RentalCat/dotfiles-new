@@ -8,8 +8,15 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export XDG_CONFIG_HOME="$HOME/dotfiles"
 export XDG_DATA_HOME="$HOME/.local/share"
+export GOBIN="$XDG_DATA_HOME/go/bin"
 
 # tmux の外側ならこれ移行の処理は行わない。
 if [[ -z $TMUX ]] then
   return 0
 fi
+
+readonly zsh_dir="$XDG_CONFIG_HOME/zsh"
+readonly zsh_data_dir="$XDG_DATA_HOME/zsh"
+
+# シークレット関係の環境変数設定
+[[ -r $zsh_dir/.secure_env.zsh ]] && source $zsh_dir/.secure_env.zsh

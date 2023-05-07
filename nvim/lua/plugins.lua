@@ -1,0 +1,116 @@
+-- NOTICE: event memo ========================================================================= {{{
+-- VaryLazy: LazyDone が終わった後の VimEnter イベント
+-- }}}
+return {
+  defaults = {lazy = true},
+
+  -- colorscheme ------------------------------------------------------------------------------ {{{
+  {
+    'tomasr/molokai',
+    lazy = false,  -- カラースキーマは lazy=false
+    priority = 1000,  -- カラースキーマは高めに設定するらしい
+    config = function()
+      vim.cmd([[colorscheme molokai]])
+    end
+  },
+  -- }}}
+
+  -- UI追加関係 ------------------------------------------------------------------------------- {{{
+  { -- Dark deno-powered ui framework (deniteの後続)
+    'Shougo/ddu.vim',
+    dependencies = {
+      'vim-denops/denops.vim',           -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+      'Shougo/ddu-ui-ff',                -- UI    : fuzzy finder
+      'shun/ddu-source-buffer',          -- source: buffer一覧
+      'shun/ddu-source-rg',              -- source: ファイル横断の文字列検索
+      'matsui54/ddu-source-help',        -- source: help
+      'yuki-yano/ddu-filter-fzf',        -- filter: fzfフィルター
+      'Shougo/ddu-filter-sorter_alpha',  -- sorter: alphabet sorter
+      'Shougo/ddu-kind-file',            -- kind  : fileに対してのアクションを定義
+    },
+    keys = {
+      {'<Leader>dg', '<cmd>DduRg<cr>'                                            , desc='ddu ripgrep'},
+      {'<Leader>db', '<cmd>call ddu#start({"sources": [{"name": "buffer"}]})<cr>', desc='ddu buffer'},
+      {'<Leader>dh', '<cmd>call ddu#start({"sources": [{"name": "help"}]})<cr>'  , desc='ddu buffer'},
+    },
+    config = function()
+      require('config/ddu')
+    end,
+  },
+  -- }}}
+
+  -- 補完関係 --------------------------------------------------------------------------------- {{{
+  { -- source: LSP (Language Server Protocol) クライアント設定プラグイン
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/nvim-lsp-installer',  -- LSP の言語用サーバーのインストーラー (簡単にインストールできるように)
+    },
+    event = "InsertEnter",
+    config = function()
+      require('config/nvim-lspconfig')
+    end,
+  },
+  { -- Dark deno-powered completion framework (deopleteの後続)
+    'Shougo/ddc.vim',
+    dependencies = {
+      'vim-denops/denops.vim',              -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+      'matsui54/denops-popup-preview.vim',  -- 補完時にドキュメントを表示
+      'matsui54/denops-signature_help',     -- LSPサーバからシグネチャのヘルプを表示してくれる (関数の引数一覧など)
+      'Shougo/pum.vim',                     -- 魔王謹製の独自補完ウィンドウ
+      'Shougo/ddc-ui-pum',                  -- UI     : pum UI
+      'Shougo/ddc-source-nvim-lsp',         -- source : LSP (Language Server Protocol) 補完 (各言語は別で設定が必要)
+      'tani/ddc-fuzzy',                     -- matcher: fuzzy検索・ソートができるように
+      'Shougo/ddc-converter_remove_overlap',-- matcher: 補完候補の重複を消すfilter
+    },
+    event = "InsertEnter",
+    config = function()
+      require('config/ddc')
+    end,
+  },
+  -- }}}
+
+  -- ファイル操作関係 ------------------------------------------------------------------------- {{{
+  { -- ファイラー本体
+    'lambdalisue/fern.vim',
+    dependencies = {
+      'lambdalisue/nerdfont.vim',                -- nerdfontプラグイン本体
+      'lambdalisue/glyph-palette.vim',           -- nerdfont色つけ用
+      'lambdalisue/fern-renderer-nerdfont.vim',  -- nerdfont fern を描画
+      'yuki-yano/fern-preview.vim',              -- プレビュー表示プラグイン
+      'lambdalisue/fern-git-status.vim',         -- gitステータス表示プラグイン
+      'lambdalisue/fern-mapping-git.vim',        -- gitステータス変更
+      'lambdalisue/fern-hijack.vim',             -- ハイジャック ('vim .' でfern起動)
+    },
+    lazy = false,  -- git-status, hijackを有効にするため lazy=false
+    keys = {
+      {'<Leader>f', '<cmd>Fern . -reveal=%<cr>', desc='Fern'},
+    },
+    config = function()
+      require('config/fern')
+    end,
+  },
+  { -- Git管理ツール
+    'lambdalisue/gin.vim',
+    dependencies = {
+      'vim-denops/denops.vim',  -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+    },
+    keys = {
+      {'<Leader>gs', '<cmd>GinStatus<cr>', desc='Gin'},
+    },
+  },
+  -- }}}
+
+  -- 単語検索拡張
+  {
+    'easymotion/vim-easymotion',
+    keys = {
+      {',', '<Plug>(easymotion-s2)'},
+      {'/', '<Plug>(easymotion-sn)'},
+      {'f', '<Plug>(easymotion-fl)'},
+      {'F', '<Plug>(easymotion-Fl)'},
+    },
+    config = function()
+      vim.api.nvim_set_var('EasyMotion_do_mapping', 0)  -- オリジナルマッピング有効
+    end,
+  },
+}

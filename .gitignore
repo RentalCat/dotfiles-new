@@ -1,2 +1,5 @@
 # neovim
 nvim/.cache/*
+
+# zsh
+zsh/.secure_env.zsh

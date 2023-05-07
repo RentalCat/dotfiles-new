@@ -8,8 +8,14 @@
 ## brew installs
 ### asdf
 - anyenvに変わる言語バージョン管理ツール
+### deno
+- Deno (ディーノ)。Node.js を改良した新しいJS/TSランタイム。
+  - ref: [Denoとはなにか - 実際につかってみる](https://qiita.com/azukiazusa/items/8238c0c68ed525377883)
+- neovim > ddc (補完プラグイン) 等で使っている
 ### direnv
 - ディレクトリ毎に環境変数書き換えるやつ
+### exa
+- rust製 ls 強化コマンド
 ### fontforge
 - NerdFontを自前で作成するのに使う。
   - ref: [Ricty DiminishedとNerd Fontsを合成する方法(Mac) - Qiita](https://qiita.com/uhooi/items/dc9a9657f1706283753b)
@@ -31,10 +37,10 @@
 ### neovim
 ### pinentry-mac
 - gnupg 認証時に求められるパスフレーズをMacのkeychainから呼び出すのに使う
+### ripgrep (rg)
+- テキスト検索ツール。ptより高速。
 ### sheldon
 - Zsh/Bashプラグインマネージャー
-### the\_platinum\_searcher (pt)
-- 高速なコードサーチツール
 ### tmux
 
 ## cask

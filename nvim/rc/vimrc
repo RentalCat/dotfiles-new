@@ -1,12 +1,19 @@
 scriptencoding utf-8
 
+function! Test(hoge, fuga) abort
+    " test class
+endfunction
+
+
+
 " init only settings ------------------------------------------------------ {{{
 " 起動時のみ呼ばれるやーつ
 if has('vim_starting')
   " execute 'source' expand('<sfile>:h').'/init.rc.vim'
 endif
 " }}}
-"
+
+
 " first settinfs ---------------------------------------------------------- {{{
 " Leader設定 (プラグインにkeybindを反映させるため冒頭で定義)
 let mapleader = "\<Space>"
@@ -155,3 +162,25 @@ noremap <Up>    <Nop>
 noremap <Down>  <Nop>
 noremap <Left>  <Nop>
 noremap <Right> <Nop>
+
+" フォーカスウィンドウ設定 ----------------------------------------------------
+" 背景が設定されているハイライトグループは背景情報を消しておく (Normalで変更できるように)
+hi Special guibg=none
+
+" フォーカスしていない時の背景色
+let s:inactiveBackGround = 'guibg=#484c44'
+let s:activeBackGround = 'guibg=#1b1d1e'
+
+"Neovim内でフォーカスしていないペインの背景色設定
+execute ('hi NormalNC ' . s:inactiveBackGround)
+
+augroup ChangeBackGround
+  autocmd!
+  " フォーカスした時(colorscheme準拠に切替)
+  autocmd FocusGained * execute ('hi Normal ' . s:activeBackGround)
+  " フォーカスを外した時（フォーカスしていない時の背景色に切替)
+  autocmd FocusLost * execute('hi Normal ' . s:inactiveBackGround)
+augroup end
+
+" カーソル下のハイライトグループを表示
+command! VimShowHlItem execute('hi ' . synIDattr(synID(line("."), col("."), 1), "name"))

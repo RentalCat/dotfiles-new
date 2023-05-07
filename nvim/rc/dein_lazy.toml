@@ -7,7 +7,7 @@ hook_add = '''
 '''
 # }}}
 
-# ファイラー ============================================================== {{{
+# 操作関係 ================================================================ {{{
 [[plugins]]  # 単語検索拡張
 repo = 'easymotion/vim-easymotion'
 on_map = '<Plug>(easymotion-'
@@ -18,4 +18,92 @@ hook_add = '''
   nnoremap f <Plug>(easymotion-fl)
   nnoremap F <Plug>(easymotion-Fl)
 '''
+# }}}
+
+# 補完関係 ================================================================ {{{
+[[plugins]]  # Deno wrapper
+repo = 'vim-denops/denops.vim'
+on_if = 1  # 初期処理が終わり次第読み込み
+
+[[plugins]]  # Dark deno-powered completion framework (deopleteの後続)
+repo = 'Shougo/ddc.vim'
+depends = ['denops.vim']
+on_event = 'InsertEnter'
+hook_source = 'execute "source " . GetNvimrcDir() . "/plugins/ddc.rc.vim"'
+
+[[plugins]]  # LSP (Language Server Protocol) のクライアント設定用プラグイン
+repo = 'neovim/nvim-lspconfig'
+on_event = 'BufEnter'
+hook_source= '''
+lua << EOF
+# nvim-lsp-installer を使って設定する
+local lsp_installer = require("nvim-lsp-installer")
+lsp_installer.on_server_ready(function(server)
+  local opts = {}
+  server:setup(opts)
+end)
+EOF
+'''
+
+[[plugins]]  # LSP の言語用サーバーのインストーラー (簡単にインストールできるように)
+repo = 'williamboman/nvim-lsp-installer'
+on_source = 'nvim-lspconfig'
+
+[[plugins]]  # 魔王謹製の独自補完ウィンドウ
+repo = 'Shougo/pum.vim'
+on_event = 'InsertEnter'
+hook_add = '''
+  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+  inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
+  inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
+  inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
+'''
+
+
+[[plugins]]  # 補完時にドキュメントも表示してくれる (補完対象の定義が見れるよ)
+ repo = 'matsui54/denops-popup-preview.vim'
+ on_source = 'ddc.vim'
+ hook_source = '''
+ call popup_preview#enable()
+'''
+[[plugins]]  # LSPサーバからシグネチャのヘルプを表示してくれる (関数の引数一覧など)
+ repo = 'matsui54/denops-signature_help'
+ on_source = 'ddc.vim'
+ hook_source = '''
+ call signature_help#enable()
+'''
+
+# ddc: UI ----------------------------------------------------------------- {{{
+[[plugins]]  # ddc UI
+repo = 'Shougo/ddc-ui-pum'
+depends = ['pum.vim']
+on_source = 'ddc.vim'
+# }}}
+
+# ddc: sources ------------------------------------------------------------ {{{
+[[plugins]]  # 現在の行の周辺の単語を候補として抽出してくれる
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]  # LSP (Language Server Protocol) 補完 (各言語は別で設定が必要)
+repo = 'Shougo/ddc-source-nvim-lsp'
+on_source = 'ddc.vim'
+
+# }}}
+
+# ddc: matchers ----------------------------------------------------------- {{{
+[[plugins]]  # fuzzy検索・ソートができるように
+repo = 'tani/ddc-fuzzy'
+on_source = 'ddc.vim'
+
+[[plugins]]  # 補完候補の重複を消すfilter
+repo = 'Shougo/ddc-converter_remove_overlap'
+on_source = 'ddc.vim'
+
+# }}}
+
+# ddc: sorters ------------------------------------------------------------ {{{
+# }}}
 # }}}

@@ -9,8 +9,17 @@ repo = 'tomasr/molokai'
 hook_add = 'colorscheme molokai'
 # }}}
 
-# status bar, tab bar のUIカスタマイズ ==================================== {{{
-[[plugins]]
+# UI ====================================================================== {{{
+[[plugins]]  # status bar, tab bar のUIカスタマイズ
 repo = 'itchyny/lightline.vim'
 hook_add = 'execute "source " . GetNvimrcDir() . "/plugins/lightline.rc.vim"'
+
+[[plugins]]  # インデント毎に破線を表示
+repo = 'Yggdroot/indentLine'
+hook_add = '''
+  augroup indent_line
+    autocmd!
+    autocmd BufWinEnter,ShellCmdPost * IndentLinesReset
+  augroup END
+'''
 # }}}
