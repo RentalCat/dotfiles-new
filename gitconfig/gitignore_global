@@ -1,6 +1,10 @@
 .python-version
 .local.vimrc
 .local
+
+# direnv
+.envrc
+
 *.orig
 .DS_Store
 .secrets
