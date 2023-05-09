@@ -1,4 +1,6 @@
 tap "homebrew/bundle"
+# Run your GitHub Actions locally 🚀
+brew "act"
 # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "asdf"
 # Secure runtime for JavaScript and TypeScript

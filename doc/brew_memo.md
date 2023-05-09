@@ -2,6 +2,8 @@
 - ` brew bundle dump --force --describe 'comment' --file $XDG_CONFIG_HOME/Brewfile` で現在インストール中のライブラリをBrewfileに上書き
 - ` brew bundle cleanup --force --file $XDG_CONFIG_HOME/Brewfile` でBrewfileの内容を反映 (不要ライブラリはアンインストールされる)
 ## taps
+### act
+- Github Actions を docker を用いて手元で実行するツール 
 ### bundle
 - Brewfile をサポートするためのtap
 
