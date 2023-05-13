@@ -10,7 +10,10 @@ return {
     lazy = false,  -- カラースキーマは lazy=false
     priority = 1000,  -- カラースキーマは高めに設定するらしい
     config = function()
-      vim.cmd([[colorscheme molokai]])
+      vim.cmd([[
+        colorscheme molokai
+        highlight NonText ctermfg=236 gui=bold guifg=#213033
+      ]])
     end
   },
   -- }}}
@@ -40,14 +43,25 @@ return {
   -- }}}
 
   -- 補完関係 --------------------------------------------------------------------------------- {{{
-  { -- source: LSP (Language Server Protocol) クライアント設定プラグイン
-    'neovim/nvim-lspconfig',
+  { -- mason: LSP(Language Server Protocol), DAP, Linter, Formatter 管理ツール
+    'williamboman/mason.nvim',
     dependencies = {
-      'williamboman/nvim-lsp-installer',  -- LSP の言語用サーバーのインストーラー (簡単にインストールできるように)
+      'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
+      'williamboman/mason-lspconfig.nvim',  -- lsp-config と mason の橋渡し用
     },
-    event = "InsertEnter",
+    --event = "InsertEnter",
     config = function()
-      require('config/nvim-lspconfig')
+      require('config/mason')
+    end,
+  },
+  { -- LSPの稼働状況をクールなアニメーションで通知してくれるプラグイン
+    'j-hui/fidget.nvim',
+    dependencies = {
+      'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
+    },
+    event = 'BufEnter',
+    config = function()
+      require('fidget').setup()
     end,
   },
   { -- Dark deno-powered completion framework (deopleteの後続)
@@ -113,4 +127,9 @@ return {
       vim.api.nvim_set_var('EasyMotion_do_mapping', 0)  -- オリジナルマッピング有効
     end,
   },
+
+  -- インデントライン追加
+  {
+    'lukas-reineke/indent-blankline.nvim',
+  }
 }
