@@ -2,12 +2,14 @@
 - ` brew bundle dump --force --describe 'comment' --file $XDG_CONFIG_HOME/Brewfile` で現在インストール中のライブラリをBrewfileに上書き
 - ` brew bundle cleanup --force --file $XDG_CONFIG_HOME/Brewfile` でBrewfileの内容を反映 (不要ライブラリはアンインストールされる)
 ## taps
-### act
-- Github Actions を docker を用いて手元で実行するツール 
+### daipeihust/tap
+- `daipeihust/tap/im-select` を導入するためのtap
 ### bundle
 - Brewfile をサポートするためのtap
 
 ## brew installs
+### act
+- Github Actions を docker を用いて手元で実行するツール 
 ### asdf
 - anyenvに変わる言語バージョン管理ツール
 ### deno
@@ -44,7 +46,8 @@
 ### sheldon
 - Zsh/Bashプラグインマネージャー
 ### tmux
-
+### daipeihust/tap/im-select
+- コマンドでIMEの状態を制御する (vimのモード変更時に自動で英語入力に)
 ## cask
 ### rancher
 - docker ランチャー。k8s対応。無料。

@@ -30,7 +30,9 @@ local options = {
   backspace = 'indent,eol,start',              -- バックスペースキーを調整
   swapfile = false,                            -- .swp ファイルを作成しない
   backup = false,                              -- `~` (チルダ)ファイルを作成しない
+  undodir = vim.fn.stdpath('data') .. '/undo', -- undo の履歴を記録しておく (ファイルを再度開いた時も undo が効くように)
   updatetime=500,                              -- CursorHoldの時間を設定[ms]
+  mouse='',                                    -- マウスを使わない
   encoding = 'utf-8',
   fileencoding = 'utf-8',
   title = true,
@@ -43,3 +45,15 @@ end
 -- 加算関係のオプション
 vim.cmd('set formatoptions+=mMj')  -- 日本語(マルチバイト文字)行の連結時には空白を入力しない + コメント行処理を行う
 vim.cmd('set completeopt-=preview')  -- 補完時に変なウィンドウ開かない
+
+-- ファイルを開くタイミングで undofile を有効化 (setlocal なのでautocmd実行)
+vim.api.nvim_create_augroup('vimrc-undo-file', {})
+vim.api.nvim_create_autocmd(
+  'BufReadPre',
+  {
+    group = 'vimrc-undo-file',
+    callback = function()
+      vim.cmd('setlocal undofile')
+    end,
+  }
+)

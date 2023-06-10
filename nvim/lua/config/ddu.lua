@@ -1,6 +1,6 @@
 -- ddu global settings ------------------------------------------------------------------------ {{{
-local columns = vim.api.nvim_eval('&columns')
-local lines = vim.api.nvim_eval('&lines')
+-- local columns = vim.api.nvim_eval('&columns')
+-- local lines = vim.api.nvim_eval('&lines')
 vim.fn['ddu#custom#patch_global'](
   {
     ui = 'ff',

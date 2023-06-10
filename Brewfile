@@ -1,3 +1,4 @@
+tap "daipeihust/tap"
 tap "homebrew/bundle"
 # Run your GitHub Actions locally 🚀
 brew "act"
@@ -35,5 +36,7 @@ brew "ripgrep"
 brew "sheldon"
 # Terminal multiplexer
 brew "tmux"
+# Switch your input method through terminal
+brew "daipeihust/tap/im-select"
 # Kubernetes and container management on the desktop
 cask "rancher"

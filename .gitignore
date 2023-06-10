@@ -3,3 +3,6 @@ nvim/.cache/*
 
 # zsh
 zsh/.secure_env.zsh
+
+# github copilot
+github-copilot

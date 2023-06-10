@@ -30,6 +30,8 @@ vim.api.nvim_create_autocmd( 'FileType', {
       \ )
     ]])  -- }}}
     vim.keymap.set('n', '<CR>' , '<Plug>(fern-my-open-or-expand-or-collapse)'  , keyopts)
+    -- `x` で折りたたみ (nerdtree風)
+    vim.keymap.set('n', 'x'    , ' <Plug>(fern-action-collapse)'               , keyopts)
     -- 隠しファイル折りたたみ
     vim.keymap.set('n', 'i'    , '<Plug>(fern-action-hidden:toggle) '          , keyopts)
     -- プレビュー関係

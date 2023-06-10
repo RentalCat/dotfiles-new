@@ -4,7 +4,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- <ESC><ESC>  ==> ハイライトを消す
-vim.keymap.set('n', '<Esc><Esc>', ':<C-u>set nohlsearch<CR>')
+--vim.keymap.set('n', '<Esc><Esc>', ':<C-u>set nohlsearch<CR>')
 
 -- ZQ          ==> 全ファイルクローズ (従来の :q! やめました)
 vim.keymap.set('n', 'ZQ', ':<C-u>windo q<CR>', {noremap = true})

@@ -10,11 +10,19 @@ return {
     lazy = false,  -- カラースキーマは lazy=false
     priority = 1000,  -- カラースキーマは高めに設定するらしい
     config = function()
-      vim.cmd([[
-        colorscheme molokai
-        highlight NonText ctermfg=236 gui=bold guifg=#213033
-      ]])
+      require('config/colorscheme')
     end
+  },
+  -- }}}
+  -- ステータスライン関係 --------------------------------------------------------------------- {{{
+  { -- lualine
+    'nvim-lualine/lualine.nvim',
+    dependencies = {
+        'nvim-tree/nvim-web-devicons',  -- ステータスライン上にファイルアイコンを表示できるように
+    },
+    config = function()
+      require('config/lualine')
+    end,
   },
   -- }}}
 
@@ -38,6 +46,12 @@ return {
     },
     config = function()
       require('config/ddu')
+    end,
+  },
+  { -- スクロールバー表示
+    'petertriho/nvim-scrollbar',
+    config = function()
+      require('scrollbar').setup()
     end,
   },
   -- }}}
@@ -76,9 +90,28 @@ return {
       'tani/ddc-fuzzy',                     -- matcher: fuzzy検索・ソートができるように
       'Shougo/ddc-converter_remove_overlap',-- matcher: 補完候補の重複を消すfilter
     },
-    event = "InsertEnter",
+    event = 'InsertEnter',
     config = function()
       require('config/ddc')
+    end,
+  },
+  { -- Github Copilot
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup(
+        {
+          suggestion = {
+            auto_trigger = true,
+            keymap = {
+              accept = '<Right>',
+              next = '<M-n>',
+              prev = '<M-p>',
+            },
+          },
+        }
+      )
     end,
   },
   -- }}}
@@ -103,6 +136,7 @@ return {
       require('config/fern')
     end,
   },
+  -- Git関連 ---------------------------------------------------------------------------------- {{{
   { -- Git管理ツール
     'lambdalisue/gin.vim',
     dependencies = {
@@ -111,6 +145,12 @@ return {
     keys = {
       {'<Leader>gs', '<cmd>GinStatus<cr>', desc='Gin'},
     },
+  },
+  { -- 行表示の横に差分表記追加 (vim-gitgutterの進化版)
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('config/gitsigns')
+    end,
   },
   -- }}}
 
@@ -131,5 +171,18 @@ return {
   -- インデントライン追加
   {
     'lukas-reineke/indent-blankline.nvim',
-  }
+  },
+  -- 単語マーキング
+  {
+    't9md/vim-quickhl',
+    keys = {
+      {'<Leader>m', '<Plug>(quickhl-manual-this-whole-word)'},
+      {'<Leader>m', '<Plug>(quickhl-manual-this)', mode = 'x'},
+      {'<Esc><Esc>', '<Plug>(quickhl-manual-reset):<C-u>nohlsearch<CR><Esc>'},
+    },
+  },
+  -- ノーマルモード遷移時にIMEを自動でオフ, インサートモード遷移時にIMEの状態を復元 (要 im-select コマンド)
+  {
+    'yoshida-m-3/vim-im-select',
+  },
 }
