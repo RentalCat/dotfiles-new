@@ -7,6 +7,7 @@ local options = {
   colorcolumn = '100',                         -- 100行目に色付け (デフォルト値)
   list = true,                                 -- list モードをオンにして見えない文字を可視化
   listchars = 'space:⋅,tab:>-,trail:_,eol:↴',  -- 不可視文字設定
+  fillchars = 'diff:',                        -- 区切り文字設定
   wrap = false,                                -- 折り返ししない
   showmatch = true,                            -- 対応する括弧を強調表示
   diffopt = 'internal,filler,vertical,algorithm:histogram,indent-heuristic',  -- diff モード設定

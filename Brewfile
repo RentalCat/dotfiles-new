@@ -22,6 +22,8 @@ brew "git-lfs"
 brew "glow"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Improved top (interactive process viewer)
+brew "htop"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Powerful, lightweight programming language

@@ -14,6 +14,49 @@ return {
     end
   },
   -- }}}
+
+  -- LSP(Language Server Protocol)・自動補完関係 ---------------------------------------------- {{{
+  { -- mason: LSP(Language Server Protocol), DAP, Linter, Formatter 管理ツール
+    'williamboman/mason.nvim',
+    dependencies = {
+      'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
+      'williamboman/mason-lspconfig.nvim',  -- lsp-config と mason の橋渡し用
+    },
+    --event = "InsertEnter",
+    config = function()
+      require('config/mason')
+    end,
+  },
+  { -- LSPの稼働状況をクールなアニメーションで通知してくれるプラグイン
+    'j-hui/fidget.nvim',
+    tag = 'legacy',  -- このプラグインはまもなく書き直されるらしい、変更されるまで legacy タグをつけておく
+    dependencies = {
+      'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
+    },
+    event = 'BufEnter',
+    config = function()
+      require('fidget').setup()
+    end,
+  },
+  { -- Dark deno-powered completion framework (deopleteの後続)
+    'Shougo/ddc.vim',
+    dependencies = {
+      'vim-denops/denops.vim',              -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+      'matsui54/denops-popup-preview.vim',  -- 補完時にドキュメントを表示
+      'matsui54/denops-signature_help',     -- LSPサーバからシグネチャのヘルプを表示してくれる (関数の引数一覧など)
+      'Shougo/pum.vim',                     -- 魔王謹製の独自補完ウィンドウ
+      'Shougo/ddc-ui-pum',                  -- UI     : pum UI
+      'Shougo/ddc-source-nvim-lsp',         -- source : LSP (Language Server Protocol) 補完 (各言語は別で設定が必要)
+      'tani/ddc-fuzzy',                     -- matcher: fuzzy検索・ソートができるように
+      'Shougo/ddc-converter_remove_overlap',-- matcher: 補完候補の重複を消すfilter
+    },
+    event = 'InsertEnter',
+    config = function()
+      require('config/ddc')
+    end,
+  },
+  -- }}}
+
   -- ステータスライン関係 --------------------------------------------------------------------- {{{
   { -- lualine
     'nvim-lualine/lualine.nvim',
@@ -57,44 +100,6 @@ return {
   -- }}}
 
   -- 補完関係 --------------------------------------------------------------------------------- {{{
-  { -- mason: LSP(Language Server Protocol), DAP, Linter, Formatter 管理ツール
-    'williamboman/mason.nvim',
-    dependencies = {
-      'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
-      'williamboman/mason-lspconfig.nvim',  -- lsp-config と mason の橋渡し用
-    },
-    --event = "InsertEnter",
-    config = function()
-      require('config/mason')
-    end,
-  },
-  { -- LSPの稼働状況をクールなアニメーションで通知してくれるプラグイン
-    'j-hui/fidget.nvim',
-    dependencies = {
-      'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
-    },
-    event = 'BufEnter',
-    config = function()
-      require('fidget').setup()
-    end,
-  },
-  { -- Dark deno-powered completion framework (deopleteの後続)
-    'Shougo/ddc.vim',
-    dependencies = {
-      'vim-denops/denops.vim',              -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
-      'matsui54/denops-popup-preview.vim',  -- 補完時にドキュメントを表示
-      'matsui54/denops-signature_help',     -- LSPサーバからシグネチャのヘルプを表示してくれる (関数の引数一覧など)
-      'Shougo/pum.vim',                     -- 魔王謹製の独自補完ウィンドウ
-      'Shougo/ddc-ui-pum',                  -- UI     : pum UI
-      'Shougo/ddc-source-nvim-lsp',         -- source : LSP (Language Server Protocol) 補完 (各言語は別で設定が必要)
-      'tani/ddc-fuzzy',                     -- matcher: fuzzy検索・ソートができるように
-      'Shougo/ddc-converter_remove_overlap',-- matcher: 補完候補の重複を消すfilter
-    },
-    event = 'InsertEnter',
-    config = function()
-      require('config/ddc')
-    end,
-  },
   { -- Github Copilot
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
@@ -137,14 +142,24 @@ return {
     end,
   },
   -- Git関連 ---------------------------------------------------------------------------------- {{{
-  { -- Git管理ツール
-    'lambdalisue/gin.vim',
+  -- { -- Git管理ツール
+  --   'lambdalisue/gin.vim',
+  --   dependencies = {
+  --     'vim-denops/denops.vim',  -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+  --   },
+  --   cmd = 'Gin',
+  --   keys = {
+  --     {'<Leader>gs', '<cmd>GinStatus<cr>', desc='Gin'},
+  --   },
+  -- },
+  { -- Git diff
+    'sindrets/diffview.nvim',
     dependencies = {
-      'vim-denops/denops.vim',  -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+        'nvim-tree/nvim-web-devicons',  -- ファイルアイコンを表示できるように
     },
-    keys = {
-      {'<Leader>gs', '<cmd>GinStatus<cr>', desc='Gin'},
-    },
+    config = function()
+      require('config/diffview')
+    end,
   },
   { -- 行表示の横に差分表記追加 (vim-gitgutterの進化版)
     'lewis6991/gitsigns.nvim',
@@ -154,8 +169,11 @@ return {
   },
   -- }}}
 
-  -- 単語検索拡張
-  {
+  -- 標準拡張系 ------------------------------------------------------------------------------- {{{
+  { -- diffの差分を文字単位で表示する
+    'rickhowe/diffchar.vim',
+  },
+  { -- 単語検索拡張
     'easymotion/vim-easymotion',
     keys = {
       {',', '<Plug>(easymotion-s2)'},
@@ -167,13 +185,10 @@ return {
       vim.api.nvim_set_var('EasyMotion_do_mapping', 0)  -- オリジナルマッピング有効
     end,
   },
-
-  -- インデントライン追加
-  {
+  { -- インデントライン追加
     'lukas-reineke/indent-blankline.nvim',
   },
-  -- 単語マーキング
-  {
+  { -- 単語マーキング
     't9md/vim-quickhl',
     keys = {
       {'<Leader>m', '<Plug>(quickhl-manual-this-whole-word)'},
@@ -181,8 +196,8 @@ return {
       {'<Esc><Esc>', '<Plug>(quickhl-manual-reset):<C-u>nohlsearch<CR><Esc>'},
     },
   },
-  -- ノーマルモード遷移時にIMEを自動でオフ, インサートモード遷移時にIMEの状態を復元 (要 im-select コマンド)
-  {
+  { -- ノーマルモード遷移時にIMEを自動でオフ, インサートモード遷移時にIMEの状態を復元 (要 im-select コマンド)
     'yoshida-m-3/vim-im-select',
   },
+  -- }}}
 }
