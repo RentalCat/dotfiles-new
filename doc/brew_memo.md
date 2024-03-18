@@ -1,6 +1,7 @@
 # Brewfile memo
 - ` brew bundle dump --force --describe 'comment' --file $XDG_CONFIG_HOME/Brewfile` で現在インストール中のライブラリをBrewfileに上書き
 - ` brew bundle cleanup --force --file $XDG_CONFIG_HOME/Brewfile` でBrewfileの内容を反映 (不要ライブラリはアンインストールされる)
+
 ## taps
 ### daipeihust/tap
 - `daipeihust/tap/im-select` を導入するためのtap
@@ -18,8 +19,8 @@
 - neovim > ddc (補完プラグイン) 等で使っている
 ### direnv
 - ディレクトリ毎に環境変数書き換えるやつ
-### exa
-- rust製 ls 強化コマンド
+### eza
+- rust製 ls 強化コマンド (exaの後続)
 ### fontforge
 - NerdFontを自前で作成するのに使う。
   - ref: [Ricty DiminishedとNerd Fontsを合成する方法(Mac) - Qiita](https://qiita.com/uhooi/items/dc9a9657f1706283753b)
@@ -28,7 +29,15 @@
 - FuZzy Finder
 - インタラクティブなコマンド選択を用意してくれる。
 - 履歴を始め色々なところで使っている
+### gh
+- Github CLI
 ### git
+### git-delta
+- `git diff` 関連のpager
+- `diff` の内容を見やすくしてくれる
+```sh
+$ diff -u hoge fuga | delta
+```
 ### git-lfs
 - 大きなファイルを取り扱うためのgit拡張
 ### glow
@@ -43,6 +52,8 @@
 - gnupg 認証時に求められるパスフレーズをMacのkeychainから呼び出すのに使う
 ### ripgrep (rg)
 - テキスト検索ツール。ptより高速。
+### rye
+- python のパケージ管理ツール
 ### sheldon
 - Zsh/Bashプラグインマネージャー
 ### tmux

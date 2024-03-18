@@ -16,8 +16,11 @@ npm@9.5.0
 - https://github.com/paypal/gnomon
 - 行ごとの実行時間を表示してくれるツール
 
+## n
+- nodejs バージョン管理ツール (pyenv的なやつ)
+
 ## neovim
 - neovim サポート
 
 ## npm
-- nodejs パッケージ管理ツール
+- nodejs パッケージ管理ツール (pip的なやつ)

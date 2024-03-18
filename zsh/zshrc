@@ -26,7 +26,7 @@ fpath=(
 
 # 補完機能を有効、実行 (補完リストは `$zsh_data_dir/.zshcompdump` に記録)
 #   ここでやっておかないと一部pluginが使えない
-autoload -Uz compinit && compinit -C -d $zsh_data_dir/.zshcompdump
+autoload -Uz compinit && compinit -d $zsh_data_dir/.zshcompdump
 
 # zstyles ------------------------------------------------------------
 readonly c_info_fg="${c_acc_10}"
@@ -78,6 +78,8 @@ zstyle ':completion:*:*:*:*:corrections' format "%F{${c_info_fg}}-- %B%d%b %F{${
 zstyle ':completion:*:*:*:*:options' description 'yes'
 zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 
+# gh (Github CLI) 補完
+# [[ -x `whence -p gh` ]] && eval "$(gh completion -s zsh)"
 # plugins ============================================================
 [[ -r $zsh_dir/rc/plugin.zsh ]] && source $zsh_dir/rc/plugin.zsh
 
@@ -152,9 +154,9 @@ git push origin $branch_name
 }
 
 # ls関係
-if [[ -x `whence -p exa` ]]; then
-  # exa があればそちらを使う
-  alias ls="exa --icons"
+if [[ -x `whence -p eza` ]]; then
+  # eza があればそちらを使う
+  alias ls="eza --icons"
   alias ll="ls -l -h --git"
 else
   alias ll="ls -l"

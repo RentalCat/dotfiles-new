@@ -32,4 +32,5 @@ vim.keymap.set('i', '<PageUp>', '<cmd>call pum#map#insert_relative_page(-1)<cr>'
 
 -- 設定の有効化
 vim.fn['ddc#enable']()
-vim.fn['signature_help#enable']()
+-- vim.fn['signature_help#enable']()  -- Vim:E117: 未知の関数です: signature_help#enable
+

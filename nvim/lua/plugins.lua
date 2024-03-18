@@ -21,8 +21,9 @@ return {
     dependencies = {
       'neovim/nvim-lspconfig',              -- LSP クライアント設定プラグイン
       'williamboman/mason-lspconfig.nvim',  -- lsp-config と mason の橋渡し用
+      'jose-elias-alvarez/null-ls.nvim',    -- Formatter, Linter
     },
-    --event = "InsertEnter",
+    -- event = "InsertEnter",
     config = function()
       require('config/mason')
     end,
@@ -43,7 +44,7 @@ return {
     dependencies = {
       'vim-denops/denops.vim',              -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
       'matsui54/denops-popup-preview.vim',  -- 補完時にドキュメントを表示
-      'matsui54/denops-signature_help',     -- LSPサーバからシグネチャのヘルプを表示してくれる (関数の引数一覧など)
+      -- 'matsui54/denops-signature_help',     -- LSPサーバからシグネチャのヘルプを表示してくれる (関数の引数一覧など)
       'Shougo/pum.vim',                     -- 魔王謹製の独自補完ウィンドウ
       'Shougo/ddc-ui-pum',                  -- UI     : pum UI
       'Shougo/ddc-source-nvim-lsp',         -- source : LSP (Language Server Protocol) 補完 (各言語は別で設定が必要)
@@ -57,6 +58,15 @@ return {
   },
   -- }}}
 
+  -- 言語固有関係 ----------------------------------------------------------------------------- {{{
+  { -- rust
+    'rust-lang/rust.vim',
+    ft = {'rust'},
+    config = function()
+      vim.g.rustfmt_autosave = 1
+    end,
+  },
+  -- }}}
   -- ステータスライン関係 --------------------------------------------------------------------- {{{
   { -- lualine
     'nvim-lualine/lualine.nvim',
@@ -110,7 +120,7 @@ return {
           suggestion = {
             auto_trigger = true,
             keymap = {
-              accept = '<Right>',
+              accept = '✠',
               next = '<M-n>',
               prev = '<M-p>',
             },
@@ -157,6 +167,9 @@ return {
     dependencies = {
         'nvim-tree/nvim-web-devicons',  -- ファイルアイコンを表示できるように
     },
+    keys = {
+      {'<Leader>gd', '<cmd>DiffviewOpen<cr>', desc='Gin'},
+    },
     config = function()
       require('config/diffview')
     end,
@@ -198,6 +211,29 @@ return {
   },
   { -- ノーマルモード遷移時にIMEを自動でオフ, インサートモード遷移時にIMEの状態を復元 (要 im-select コマンド)
     'yoshida-m-3/vim-im-select',
+  },
+  { -- ファイル内置換プレビュー
+    'osyo-manga/vim-over',
+    config = function()
+      vim.cmd [[
+        cnoreabb <silent><expr>s
+        \ getcmdtype()==':' &&
+        \ getcmdline()=~'^s' ? 'OverCommandLine<CR><C-u>%s/<C-r>=get([], getchar(0), '')<CR>' : 's'
+      ]]
+    end,
+  },
+  -- }}}
+  -- 新規機能追加系 --------------------------------------------------------------------------- {{{
+  { -- プロジェクトディレクトリごとにvimの設定ファイルを適応
+    'windwp/nvim-projectconfig',
+    config = function()
+      require('nvim-projectconfig').setup(
+        {
+          project_dir = vim.fn.stdpath('data') .. '/projects-config/',
+          silent = false,
+        }
+      )
+    end,
   },
   -- }}}
 }

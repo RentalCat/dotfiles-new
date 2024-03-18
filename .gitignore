@@ -6,3 +6,6 @@ zsh/.secure_env.zsh
 
 # github copilot
 github-copilot
+
+# gh
+gh/hosts.yml
