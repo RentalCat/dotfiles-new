@@ -82,23 +82,23 @@ return {
   -- UI追加関係 ------------------------------------------------------------------------------- {{{
   { -- Dark deno-powered ui framework (deniteの後続)
     'Shougo/ddu.vim',
+    lazy = false,
     dependencies = {
-      'vim-denops/denops.vim',           -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
-      'Shougo/ddu-ui-ff',                -- UI    : fuzzy finder
-      'shun/ddu-source-buffer',          -- source: buffer一覧
-      'shun/ddu-source-rg',              -- source: ファイル横断の文字列検索
-      'matsui54/ddu-source-help',        -- source: help
-      'yuki-yano/ddu-filter-fzf',        -- filter: fzfフィルター
-      'Shougo/ddu-filter-sorter_alpha',  -- sorter: alphabet sorter
-      'Shougo/ddu-kind-file',            -- kind  : fileに対してのアクションを定義
+      'vim-denops/denops.vim',                -- Deno wrapper (Deno: JS & TypeScriptのランタイム環境)
+      'Shougo/ddu-ui-ff',                     -- UI     : fuzzy finder
+      'shun/ddu-source-buffer',               -- source : buffer一覧
+      'shun/ddu-source-rg',                   -- source : ファイル横断の文字列検索
+      'matsui54/ddu-source-help',             -- source : help
+      'yuki-yano/ddu-filter-fzf',             -- filter : fzfフィルター
+      'Shougo/ddu-filter-matcher_substring',  -- matcher: 入力した文字列に応じて絞り込みを行なう
+      'Shougo/ddu-filter-sorter_alpha',       -- sorter : alphabet sorter
+      'Shougo/ddu-kind-file',                 -- kind   : fileに対してのアクションを定義
     },
-    keys = {
-      {'<Leader>dg', '<cmd>DduRg<cr>'                                            , desc='ddu ripgrep'},
-      {'<Leader>db', '<cmd>call ddu#start({"sources": [{"name": "buffer"}]})<cr>', desc='ddu buffer'},
-      {'<Leader>dh', '<cmd>call ddu#start({"sources": [{"name": "help"}]})<cr>'  , desc='ddu buffer'},
-    },
+    keys = function()
+        return require('config/ddu').keys()
+    end,
     config = function()
-      require('config/ddu')
+      require('config/ddu').config()
     end,
   },
   { -- スクロールバー表示
